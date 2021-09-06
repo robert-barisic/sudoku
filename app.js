@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const squares = []
   let highlightedSquares = []
+  let starterSquares = []
+
   let shift = 0
 
   let phase = 0     // 0: setUp,  1:  inGame
@@ -65,13 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function startGame() {
+    phase = 1
     grid.style.color = 'blue'
+    squares.forEach(square => {
+      if(square.innerText != ''){
+        starterSquares.push(square)
+        square.style.color = 'black'
+      }
+    });
   }
-
+  
   function clearGame() {
 
   }
-
 
   function highlight() {
     if (shift == 0) {
@@ -98,7 +106,19 @@ document.addEventListener('DOMContentLoaded', () => {
       shift = 1;
     }
     if (e.keyCode >= 49 && e.keyCode <= 57) {
-      highlightedSquares.forEach(square => square.innerHTML = '' + (e.keyCode - 48))
+      highlightedSquares.forEach(square => {
+        if(phase == 0){
+          square.innerHTML = '' + (e.keyCode - 48)
+        }
+        else{
+          if(starterSquares.includes(square)){
+            //Do not change the Set Numbers
+          }
+          else{
+            square.innerHTML = '' + (e.keyCode - 48)
+          }
+        }
+      });
     }
     if (e.keyCode == 8){
       highlightedSquares.forEach(square => square.innerHTML = '')
